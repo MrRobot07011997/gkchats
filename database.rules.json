@@ -1,0 +1,32 @@
+{
+  "rules": {
+    "messages": {
+      ".read": true,
+      ".write": true,
+      "$messageId": {
+        ".validate": "newData.hasChildren(['username', 'timestamp']) && 
+                     (newData.hasChild('text') || newData.hasChild('imageUrl'))",
+        "text": {
+          ".validate": "!newData.exists() || (newData.isString() && 
+                       newData.val().length > 0 && 
+                       newData.val().length <= 1000)"
+        },
+        "imageUrl": {
+          ".validate": "!newData.exists() || (newData.isString() && 
+                       newData.val().matches(/^https:\\/\\/firebasestorage\\.googleapis\\.com/))"
+        },
+        "username": {
+          ".validate": "newData.isString() && 
+                       newData.val().length >= 2 && 
+                       newData.val().length <= 30"
+        },
+        "timestamp": {
+          ".validate": "newData.isNumber() || newData.val() == 'now'"
+        },
+        "$other": {
+          ".validate": false
+        }
+      }
+    }
+  }
+}

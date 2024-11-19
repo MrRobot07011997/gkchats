@@ -1,0 +1,13 @@
+<content>rules_version = '2';
+
+service firebase.storage {
+  match /b/{bucket}/o {
+    match /chat-images/{imageId} {
+      allow read: if true;
+      allow create: if
+        request.resource.size < 5 * 1024 * 1024 && // 5MB max
+        request.resource.contentType.matches('image/.*');
+      allow delete: if false;
+    }
+  }
+}</content>
